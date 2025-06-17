@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Criar Postagem - WebUna</title>
+
+    <link rel="stylesheet" href="./styles/style.css" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+    <link rel="stylesheet" href="./styles/criarPostagem.css" />
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        <img src="./image/logoWebUna.png" alt="Logo WebUna" />
+      </div>
+    </header>
+
+    <div class="header-right-area">
+      <a href="perfil.html" class="profile-icon-wrapper"><i class="fas fa-user"></i></a>
+      <div class="notification-icon"><i class="fas fa-bell"></i></div>
+    </div>
+
+    <nav class="secondary-header" id="navbar-container"></nav>
+
+    <main class="content">
+      <div class="create-post-card">
+        <h2>Criar Nova Postagem</h2>
+        <div>
+          <h3>Tipo de Postagem</h3>
+          <div style="display: flex; gap: 8px; margin: 16px 0px">
+            <button class="primary-btn" style="background-color: #cc2e2e; color: #ffffff;" id="publicacaoButton">Publicação</button>
+            <button class="primary-btn" id="eventoButton">Evento</button>
+          </div>
+        </div>
+        <form class="create-post-form" id="eventoForm">
+          <label for="titulo">Título</label>
+          <input type="text" id="titulo" required />
+
+          <label for="descricao">Descrição</label>
+          <textarea id="descricao" rows="5" placeholder="Fale um pouco sobre o evento..."></textarea>
+
+          <div id="eventoFormFields" style="display: none"></div>
+
+          <label for="imagem">Imagem de capa</label>
+          <input type="file" id="imagem" accept="image/*" />
+          <div class="image-preview" id="imagePreview"><span>Pré-visualização da imagem</span></div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-primary">Publicar</button>
+            <button type="reset" class="btn-reset">Limpar</button>
+          </div>
+        </form>
+
+        <div id="loading"></div>
+      </div>
+    </main>
+
+    <script src="./js/config.js"></script>
+    <script src="./js/main.js"></script>
+
+    <script>
+      const eventoFormFields = document.getElementById("eventoFormFields");
+      const eventoButton = document.getElementById("eventoButton");
+      const publicacaoButton = document.getElementById("publicacaoButton");
+
+      eventoButton.addEventListener("click", () => {
+        eventoFormFields.style.display = "block";
+        eventoFormFields.innerHTML = `
+            <div style="display: flex; gap: 16px; flex-wrap: wrap">
+              <div style="flex: 1; min-width: 140px">
+                <label for="data">Data *</label>
+                <input type="date" id="data" required />
+              </div>
+              <div style="flex: 1; min-width: 140px">
+                <label for="hora">Horário *</label>
+                <input type="time" id="hora" required />
+              </div>
+            </div>
+
+            <label for="local">Local *</label>
+            <input type="text" id="local" placeholder="Ex.: Terminal Rodoviário de Divinópolis" />
+
+            <label for="modalidadeInput">Modalidades</label>
+            <div>
+              <select id="modalidadeInput" class="select-modalidade">
+                <option selected value="PRESENCIAL">Presencial</option>
+                <option value="REMOTO">Remoto</option>
+                <option value="HIBRIDO">Híbrido</option>
+              </select>
+            </div>
+
+            <label for="link">Link de inscrição (opcional)</label>
+            <input type="url" id="link" placeholder="https://..." />
+        `;
+
+        eventoButton.style = "background-color: #cc2e2e; color: #ffffff";
+        publicacaoButton.style = "background-color: #ffffff; color: #333";
+      });
+
+      publicacaoButton.addEventListener("click", () => {
+        eventoFormFields.style.display = "none";
+        eventoFormFields.innerHTML = "";
+        publicacaoButton.style = "background-color: #cc2e2e; color: #ffffff";
+        eventoButton.style = "background-color: #ffffff; color: #333";
+      });
+
+      const imagemInput = document.getElementById("imagem");
+      const imagePreview = document.getElementById("imagePreview");
+      imagemInput.addEventListener("change", () => {
+        const file = imagemInput.files[0];
+        if (file) {
+          const url = URL.createObjectURL(file);
+          imagePreview.innerHTML = `<img src="${url}" alt="Pré-visualização">`;
+        } else {
+          imagePreview.innerHTML = "<span>Pré-visualização da imagem</span>";
+        }
+      });
+
+      document.getElementById("eventoForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const formData = new FormData();
+
+        formData.append("titulo", document.getElementById("titulo").value);
+        formData.append("descricao", document.getElementById("descricao").value);
+        formData.append("imagem", imagemInput.files[0] || null);
+
+        if (document.getElementById("eventoFormFields").style.display === "block") {
+          formData.append(
+            "data",
+            new Date(document.getElementById("data").value + "T" + document.getElementById("hora").value).toISOString()
+          );
+          formData.append("local", document.getElementById("local").value);
+          formData.append("modalidade", document.getElementById("modalidadeInput").value);
+          formData.append("link", document.getElementById("link").value);
+        }
+
+        console.log(formData);
+
+        const loading = document.getElementById("loading");
+        loading.innerHTML = `
+          <div class="loader-container">
+            <div class="squares">
+              <div class="square"></div>
+              <div class="square"></div>
+              <div class="square"></div>
+              <div class="square"></div>
+            </div>
+          </div>
+        `;
+
+        fetch(`${CONFIG.API_URL}/posts`, {
+          method: "POST",
+          body: formData,
+          credentials: "include",
+        })
+          .then((response) => {
+            if (response.ok) {
+              window.location.href = "index.html";
+            } else {
+              alert("Erro ao publicar evento.");
+            }
+          })
+          .catch((error) => {
+            console.error("Erro:", error);
+            alert("Erro ao publicar evento.");
+          });
+
+        chipList.innerHTML = "";
+        imagePreview.innerHTML = "<span>Pré-visualização da imagem</span>";
+      });
+    </script>
+  </body>
+</html>
