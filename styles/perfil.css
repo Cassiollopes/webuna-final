@@ -1,0 +1,145 @@
+.perfil-content {
+    padding: 30px 20px;
+    margin-top: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: calc(100vh - 100px - 90px);
+    box-sizing: border-box;
+}
+
+.profile-card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    padding: 25px 35px;
+    width: 100%;
+    max-width: 600px;
+    text-align: left;
+    margin-bottom: 30px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-header {
+    margin-bottom: 25px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    position: relative;
+}
+
+.btn-logout {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background-color: #ffffff;
+    cursor: pointer;
+    color: #333;
+    font-size: 0.87em;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: fit-content;
+    border: 1px solid #ccc;
+    padding: 4px 12px;
+    border-radius: 50px;
+}
+
+.profile-pic-placeholder {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 3px solid #ad1801;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    flex-shrink: 0;
+}
+
+.profile-pic-placeholder i {
+    font-size: 3.5em;
+    color: #ad1801;
+}
+
+.profile-info-text {
+    flex-grow: 1;
+    position: relative;
+}
+
+.profile-header h1 {
+    font-size: 1.8em;
+    color: #222222;
+    margin: 0 0 5px 0;
+    text-transform: capitalize;
+}
+
+.profile-title {
+    font-size: 1em;
+    color: #777777;
+    margin: 0;
+}
+
+.profile-details {
+    margin-bottom: 30px;
+    text-align: left;
+    line-height: 1.5;
+}
+
+.profile-details p {
+    font-size: 0.95em;
+    color: #444444;
+    margin-bottom: 8px;
+}
+
+.profile-details p:last-child {
+    margin-bottom: 0;
+}
+
+.profile-actions {
+    text-align: center;
+    gap: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-edit-profile {
+    background-color: #ad1801;
+    color: #fff;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    text-decoration: none; /* REMOVE O SUBLINHADO */
+    display: inline-block; /* Garante que padding e border-radius funcionem bem */
+}
+
+.btn-edit-profile:hover {
+    background-color: #c42004;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Media Queries para responsividade */
+@media (max-width: 768px) {
+    .profile-card {
+        padding: 20px;
+    }
+    .profile-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+    .profile-pic-placeholder {
+        margin-bottom: 10px;
+    }
+}
