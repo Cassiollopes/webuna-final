@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Perfil - WebUna</title>
+    <link rel="stylesheet" href="./styles/style.css" />
+    <link rel="stylesheet" href="./styles/perfil.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        <img src="./image/logoWebUna.png" alt="Logo WebUna" />
+      </div>
+    </header>
+
+    <div class="header-right-area">
+      <a href="perfil.html" class="profile-icon-wrapper">
+        <i class="fas fa-user"></i>
+      </a>
+      <div class="notification-icon">
+        <i class="fas fa-bell"></i>
+      </div>
+    </div>
+
+    <nav class="secondary-header" id="navbar-container"></nav>
+
+    <main class="perfil-content">
+      <div class="profile-card">
+        <div class="profile-header">
+          <div class="profile-pic-placeholder">
+            <i class="fas fa-user-circle"></i>
+          </div>
+          <div class="profile-info-text">
+            <h1 id="name">...</h1>
+            <p class="profile-title" id="role">...</p>
+            <button class="btn-logout"><i class="fas fa-sign-out-alt"></i> Sair</button>
+          </div>
+        </div>
+        <div class="profile-details">
+          <div class="profile-detail-item">
+            <strong>Matrícula:</strong>
+            <p id="matricula">...</p>
+          </div>
+          <div class="profile-detail-item">
+            <strong>Campus:</strong>
+            <p id="campus">...</p>
+          </div>
+          <div class="profile-detail-item">
+            <strong>Email:</strong>
+            <p id="email">...</p>
+          </div>
+          <div class="profile-detail-item">
+            <strong>Curso:</strong>
+            <p id="curso">...</p>
+          </div>
+        </div>
+        <div class="profile-actions">
+          <a href="editarPerfil.html" class="btn-edit-profile">Editar Perfil</a>
+        </div>
+      </div>
+    </main>
+
+    <div id="loading"></div>
+
+    <footer class="footer">
+      <div class="footer-contact-info">
+        <p class="contact-us-text">CONTATE-NOS PARA SANAR SUAS DÚVIDAS</p>
+        <div class="contact-items">
+          <a href="mailto:webuna@gmail.com" aria-label="Enviar e-mail para webuna@gmail.com">
+            <i class="fas fa-envelope"></i>
+            <span>webuna@gmail.com</span>
+          </a>
+          <a href="tel:3341-2704" aria-label="Ligar para 3341-2704">
+            <i class="fas fa-phone"></i>
+            <span>3341-2704</span>
+          </a>
+          <a
+            href="https://www.instagram.com/webuna_oficial"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Visitar Instagram da WebUna"
+          >
+            <i class="fab fa-instagram"></i>
+            <span>@webuna_oficial</span>
+          </a>
+          <a
+            href="https://wa.me/5537998102347"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Enviar mensagem WhatsApp para (37) 99810-2347"
+          >
+            <i class="fab fa-whatsapp"></i>
+            <span>(37) 99810-2347</span>
+          </a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="./js/config.js"></script>
+    <script src="./js/main.js"></script>
+
+    <script>
+      function formatEnum(enumValue) {
+        return enumValue
+          .toLowerCase() 
+          .split("_") 
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1)) 
+          .join(" "); 
+      }
+
+      const loading = document.getElementById("loading");
+        loading.innerHTML = `
+          <div class="loader-container">
+            <div class="squares">
+              <div class="square"></div>
+              <div class="square"></div>
+              <div class="square"></div>
+              <div class="square"></div>
+            </div>
+          </div>
+        `;
+
+      fetch(`${CONFIG.API_URL}/meu-perfil`, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then(async (response) => {
+          if (!response.ok) {
+            throw new Error("Erro ao buscar perfil");
+          } else {
+            loading.style.display = "none";
+            response = await response.json();
+            data = response.data;
+            document.getElementById("matricula").textContent = data.matricula;
+            document.getElementById("campus").textContent = formatEnum(data.campus);
+            document.getElementById("email").textContent = data.email;
+            document.getElementById("curso").textContent = formatEnum(data.curso);
+            document.getElementById("name").textContent = data.nome.split(" ").slice(0, 2).join(" ");
+            document.getElementById("role").textContent = formatEnum(data.role);
+          }
+        })
+        .catch((error) => {
+          console.error("Erro:", error);
+        });
+
+      document.querySelector(".btn-logout").addEventListener("click", function () {
+        fetch(`${CONFIG.API_URL}/logout`, {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((response) => {
+            if (response.ok) {
+              window.location.href = "perfil.html";
+            } else {
+              throw new Error("Erro ao fazer logout");
+            }
+          })
+          .catch((error) => {
+            console.error("Erro:", error);
+          });
+      });
+    </script>
+  </body>
+</html>

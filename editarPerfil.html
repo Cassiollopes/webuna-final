@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Editar Perfil - WebUna</title>
+    <link rel="stylesheet" href="./styles/style.css" />
+    <link rel="stylesheet" href="./styles/editarPerfil.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        <img src="./image/logoWebUna.png" alt="Logo WebUna" />
+      </div>
+    </header>
+
+    <div class="header-right-area">
+      <a href="perfil.html" class="profile-icon-wrapper">
+        <i class="fas fa-user"></i>
+      </a>
+      <div class="notification-icon">
+        <i class="fas fa-bell"></i>
+      </div>
+    </div>
+
+    <nav class="secondary-header" id="navbar-container"></nav>
+
+    <main class="edit-profile-content">
+      <div class="edit-profile-card">
+        <h2>Editar Perfil</h2>
+
+        <div class="edit-profile-pic-section">
+          <div class="profile-pic-content">
+            <div class="profile-pic-placeholder-edit">
+              <div class="profile-pic-preview" id="profile-pic-preview"><i class="fas fa-user-circle"></i></div>
+            </div>
+            <label for="upload-photo" class="upload-icon" title="Alterar foto de perfil">
+              <i class="fas fa-camera"></i>
+            </label>
+            <input type="file" id="upload-photo" accept="image/*" style="display: none" />
+          </div>
+
+          <p class="edit-profile-pic-hint">Clique no ícone da câmera para alterar sua foto.</p>
+        </div>
+
+        <form class="edit-profile-form">
+          <div class="form-group">
+            <label for="novaSenha">Nova Senha</label>
+            <input type="password" id="novaSenha" placeholder="Digite a nova senha" />
+          </div>
+          <div class="form-group">
+            <label for="confirmarNovaSenha">Confirmar Nova Senha</label>
+            <input type="password" id="confirmarNovaSenha" placeholder="Confirme a nova senha" />
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-save-changes">Salvar Alterações</button>
+            <a href="perfil.html" class="btn-cancel">Cancelar</a>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-contact-info">
+        <p class="contact-us-text">CONTATE-NOS PARA SANAR SUAS DÚVIDAS</p>
+        <div class="contact-items">
+          <a href="mailto:webuna@gmail.com" aria-label="Enviar e-mail para webuna@gmail.com">
+            <i class="fas fa-envelope"></i>
+            <span>webuna@gmail.com</span>
+          </a>
+          <a href="tel:3341-2704" aria-label="Ligar para 3341-2704">
+            <i class="fas fa-phone"></i>
+            <span>3341-2704</span>
+          </a>
+          <a
+            href="https://www.instagram.com/webuna_oficial"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Visitar Instagram da WebUna"
+          >
+            <i class="fab fa-instagram"></i>
+            <span>@webuna_oficial</span>
+          </a>
+          <a
+            href="https://wa.me/5537998102347"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Enviar mensagem WhatsApp para (37) 99810-2347"
+          >
+            <i class="fab fa-whatsapp"></i>
+            <span>(37) 99810-2347</span>
+          </a>
+        </div>
+      </div>
+
+      <div id="loading"></div>
+    </footer>
+
+    <script src="./js/config.js"></script>
+    <script src="./js/main.js"></script>
+
+    <script>
+      document.querySelector("#upload-photo").addEventListener("change", function () {
+        const file = this.files[0];
+        content = document.getElementById("profile-pic-preview");
+
+        if (file) {
+          content.innerHTML = `<img src="${URL.createObjectURL(file)}" alt="Pré-visualização da foto de perfil" />`;
+        }
+      });
+
+      document.querySelector(".edit-profile-form").addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const senha = document.getElementById("novaSenha").value;
+        const confirmarSenha = document.getElementById("confirmarNovaSenha").value;
+        if (senha !== confirmarSenha) {
+          e.preventDefault();
+          alert("As senhas não coincidem. Por favor, verifique.");
+          return false;
+        }
+
+        const formData = new FormData();
+        formData.append("imagem", document.querySelector("#upload-photo").files[0]);
+        formData.append("senha", senha);
+
+        const loading = document.getElementById("loading");
+        loading.innerHTML = `
+          <div class="loader-container">
+            <div class="squares">
+              <div class="square"></div>
+              <div class="square"></div>
+              <div class="square"></div>
+              <div class="square"></div>
+            </div>
+          </div>
+        `;
+
+        fetch(`${CONFIG.API_URL}/atualizar-perfil`, {
+          method: "POST",
+          body: formData,
+          credentials: "include",
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              window.location.href = "perfil.html";
+            } else {
+              alert("Erro ao atualizar perfil: " + data.message);
+            }
+          })
+          .catch((error) => console.error("Erro:", error));
+      });
+    </script>
+  </body>
+</html>
