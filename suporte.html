@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Suporte - WebUna</title>
+
+    
+    <link rel="stylesheet" href="./styles/style.css" />
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+    
+    <style>
+      .support-container {
+        max-width: 1100px;
+        margin: 3rem auto;
+        padding: 0 1rem;
+        box-sizing: border-box;
+      }
+      .support-grid {
+        width: 100%;
+        max-width: 1200px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+      }
+      .faq,
+      .contact-box {
+        width: 100%;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        padding: 2rem;
+        box-sizing: border-box;
+      }
+      .faq h3,
+      .contact-box h3 {
+        margin-bottom: 1rem;
+        color: #ad1801; 
+      }
+      
+      details {
+        border: 1px solid #e1e1e1;
+        border-radius: 6px;
+        margin-bottom: 8px;
+        background: #fafafa;
+      }
+      summary {
+        cursor: pointer;
+        padding: 0.75rem 1rem;
+        font-weight: 600;
+      }
+      details[open] summary {
+        background: #fff;
+      }
+      details p {
+        padding: 0 1rem 1rem;
+        line-height: 1.5;
+        color: #333;
+      }
+      
+      .btn-red {
+        background: #ad1801;
+        color: #fff;
+        border: none;
+        padding: 0.6rem 1.4rem;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: opacity 0.2s ease;
+      }
+      .btn-red:hover {
+        opacity: 0.9;
+      }
+      
+      .toast {
+        position: fixed;
+        bottom: 1rem;
+        right: 1rem;
+        background: #28a745;
+        color: #fff;
+        padding: 1rem 1.25rem;
+        border-radius: 6px;
+        display: none;
+        z-index: 1000;
+      }
+      .toast.show {
+        display: block;
+      }
+      @media (max-width: 600px) {
+        .support-container {
+          padding: 2rem 0.5rem;
+        }
+        details {
+          font-size: 0.9rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    
+    <header>
+      <div class="logo">
+        <img src="./image/logoWebUna.png" alt="Logo WebUna" />
+      </div>
+    </header>
+
+    <div class="header-right-area">
+      <a href="perfil.html" class="profile-icon-wrapper">
+        <i class="fas fa-user"></i>
+      </a>
+      <div class="notification-icon">
+        <i class="fas fa-bell"></i>
+      </div>
+    </div>
+
+    
+    <nav class="secondary-header" id="navbar-container"></nav>
+
+    
+    <main class="content">
+      <section class="support-grid">
+        <!-- FAQ -->
+        <div class="faq">
+          <h3><i class="fas fa-circle-question"></i> Perguntas Frequentes</h3>
+          <details>
+            <summary>Não consigo fazer login na minha conta.</summary>
+            <p>
+              Verifique se o e-mail está correto e se o Caps Lock não está ativado. Caso o problema persista, clique em
+              “Esqueci minha senha” para redefinir.
+            </p>
+          </details>
+          <details>
+            <summary>Como edito ou excluo um evento publicado?</summary>
+            <p>Acesse “Meus Eventos” no perfil, clique no evento desejado e escolha “Editar” ou “Excluir”.</p>
+          </details>
+          <details>
+            <summary>Posso adicionar mais de uma modalidade à minha corrida?</summary>
+            <p>
+              Sim. Na página “Criar Postagem” utilize o botão “Adicionar modalidade” para inserir quantas distâncias
+              desejar.
+            </p>
+          </details>
+          <details>
+            <summary>Qual o prazo para aprovação de um evento?</summary>
+            <p>Eventos são revisados em até 24 horas úteis. Você receberá um e-mail assim que estiver publicado.</p>
+          </details>
+          <details>
+            <summary>Como entro em contato com o suporte?</summary>
+            <p>Preencha o formulário ao lado ou envie um e-mail para suporte@webuna.com.br.</p>
+          </details>
+        </div>
+      </section>
+    </main>
+
+    
+    <footer class="footer">
+      <div class="footer-contact-info">
+        <p class="contact-us-text">CONTATE-NOS PARA SANAR SUAS DÚVIDAS</p>
+        <div class="contact-items">
+          <a href="mailto:webuna@gmail.com" aria-label="Enviar e-mail para webuna@gmail.com">
+            <i class="fas fa-envelope"></i>
+            <span>webuna@gmail.com</span>
+          </a>
+          <a href="tel:3341-2704" aria-label="Ligar para 3341-2704">
+            <i class="fas fa-phone"></i>
+            <span>3341-2704</span>
+          </a>
+          <a
+            href="https://www.instagram.com/webuna_oficial"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Visitar Instagram da WebUna"
+          >
+            <i class="fab fa-instagram"></i>
+            <span>@webuna_oficial</span>
+          </a>
+          <a
+            href="https://wa.me/5537998102347"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Enviar mensagem WhatsApp para (37) 99810-2347"
+          >
+            <i class="fab fa-whatsapp"></i>
+            <span>(37) 99810-2347</span>
+          </a>
+        </div>
+      </div>
+    </footer>
+
+    
+    <div id="toast" class="toast">Mensagem enviada com sucesso!</div>
+
+    <script src="./js/config.js"></script>
+    <script src="./js/main.js"></script>
+
+    <script>
+      const form = document.getElementById("formSuporte");
+      const toast = document.getElementById("toast");
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        toast.classList.add("show");
+        setTimeout(() => toast.classList.remove("show"), 3000);
+        form.reset();
+      });
+    </script>
+  </body>
+</html>
